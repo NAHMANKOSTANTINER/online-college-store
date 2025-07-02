@@ -1,19 +1,25 @@
-const { default: chalk } = require('chalk');
 const express = require('express');
+const chalk = require('chalk');
 const app = express();
 const PORT = 3000;
+const path = require('path');
+const HomeController = require('./controllers/Home')
+const ProductConroller = require('./controllers/Product');
 
-app.get('/',(request,response)=>{
-    response.write('Ivore Homepage!')
-    response.end();
+// HTTP -> GET, POST, DELETE , PUT
 
-});
-app.get('/prodacts',(request,response)=>{
-    response.write('Ivore prodacts!')
-    response.end();
+app.set('view engine', 'ejs');
 
-});
+app.use(express.static(path.join(__dirname,'public')));
 
-app.listen(PORT ,function(){
-    console.log(chalk.blue('server is running'))
+// Homepage
+app.get('/', HomeController.mainPage);
+
+app.get('/products', ProductConroller.showProducts);
+
+
+
+
+app.listen(PORT, function(){
+    console.log(chalk.magenta('Server is running!'));
 });
